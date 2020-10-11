@@ -64,5 +64,10 @@ namespace Var_Lencsés_Dániel
             }
             return value;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+        }
     }
 }
