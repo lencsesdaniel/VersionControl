@@ -32,9 +32,11 @@ namespace week07
             xml.LoadXml(result1);
             foreach (XmlElement element in xml.DocumentElement)
             {
-
-                var curr = element.InnerText;
-                Currencies.Add(curr);
+                foreach (XmlNode node in element)
+                {
+                    var curr = node.InnerText;
+                    Currencies.Add(curr);
+                }
             }
             
             comboBox1.DataSource = Currencies;
