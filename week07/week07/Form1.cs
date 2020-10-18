@@ -20,10 +20,8 @@ namespace week07
         public Form1()
         {
             InitializeComponent();
-            task03();
-            task05();
-            task06();
-            dataGridView1.DataSource = Rates;
+            RefreshData();
+            
         }
         public string result;
         void task03()
@@ -32,9 +30,9 @@ namespace week07
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = comboBox1.SelectedIndex.ToString(),
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString()
             };
 
             var response = mnbService.GetExchangeRates(request);
@@ -82,6 +80,30 @@ namespace week07
             chartArea.AxisX.MajorGrid.Enabled = false;
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
+        }
+
+        void RefreshData()
+        {
+            Rates.Clear();
+            task03();
+            task05();
+            task06();
+            dataGridView1.DataSource = Rates;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
