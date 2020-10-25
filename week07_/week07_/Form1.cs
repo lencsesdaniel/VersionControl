@@ -18,29 +18,15 @@ namespace week07_
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
+        List<int> nbrOfMales1 = new List<int>();
+        List<int> nbrOfFemales1 = new List<int>();
         public Form1()
         {
             InitializeComponent();
-            Population=GetPopulation(@"C:\Temp\nép.csv");
             BirthProbabilities=GetBirthProbabilities(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
 
-            for (int year = 2005; year <= 2024; year++)
-            {
-                for (int i = 0; i < Population.Count; i++)
-                {
-                    SimStep(year,Population[i]);
-                }
-
-                int nbrOfMales = (from x in Population
-                                  where x.Gender == Gender.Male && x.IsAlive
-                                  select x).Count();
-                int nbrOfFemales = (from x in Population
-                                    where x.Gender == Gender.Female && x.IsAlive
-                                    select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
-            }
+            
 
         }
         public List<Person> GetPopulation(string csvpath)
@@ -134,6 +120,51 @@ namespace week07_
                     Population.Add(újszülött);
                 }
             }
+        }
+
+        private void Simulation() 
+        {
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
+            {
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    SimStep(year, Population[i]);
+                }
+
+                int nbrOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int nbrOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+                
+                
+            }
+        }
+
+        private void DisplayResults()
+        {
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
+            {
+                richTextBox1.Text = "";
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "csv (*.csv)| *.csv";
+            if(openFileDialog.ShowDialog()== DialogResult.OK)
+            {
+                textBox1.Text = openFileDialog.FileName;
+            }
+            Population = GetPopulation(textBox1.Text);
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Simulation();
         }
     }
 }
