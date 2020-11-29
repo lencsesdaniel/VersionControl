@@ -41,6 +41,7 @@ namespace week10
             label1.Text = string.Format(
                 "{0}. generáció",
                 generation);
+            
             var playerList = from p in gc.GetCurrentPlayers()
                              orderby p.GetFitness() descending
                              select p;
@@ -70,8 +71,18 @@ namespace week10
                 gc.GameOver -= Gc_GameOver;
                 return;
             }
+
             gc.ResetCurrentLevel();
             gc.Start();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            gc.ResetCurrentLevel();
+            gc.AddPlayer(winnerBrain.Clone());
+            gc.AddPlayer();
+            ga.Focus();
+            gc.Start(true);
         }
     }
 }
